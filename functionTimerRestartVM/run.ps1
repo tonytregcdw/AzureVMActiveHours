@@ -17,8 +17,8 @@ foreach ($Subscription in $Subscriptions) {
 	$upperdate = $lowerdate.Addminutes(10)
 	write-host "Lower: $($lowerdate) - Upper: $($upperdate)"
         if (($vm.PowerState -eq 'VM running') -and ($now -gt $lowerdate) -and ($now -lt $upperdate)) {
-            #Restart-AzVM -Name $vm.Name -ResourceGroupName $vm.ResourceGroupName -NoWait
             Write-output "Restarting VM - $($vm.Name)"
+            Restart-AzVM -Name $vm.Name -ResourceGroupName $vm.ResourceGroupName -NoWait
         }
 	}
 }
