@@ -13,8 +13,9 @@ foreach ($Subscription in $Subscriptions) {
 	foreach ($vm in get-azvm -status | Where-Object {($_.Tags.RestartTime -ne $null)}) {
         write-output "Checking restart tags for VM $($vm.Name)"
         $now = $date
-	$lowerdate = get-date $($vm.tags.RestartTime)
-	$upperdate = $lowerdate.Addminutes(10)
+    $restartdate = get-date $($vm.tags.RestartTime)
+	$lowerdate = $restartdate.Addminutes(-15)
+	$upperdate = $lowerdate.Addminutes(30)
 	write-host "Lower: $($lowerdate) - Upper: $($upperdate)"
         if (($vm.PowerState -eq 'VM running') -and ($now -gt $lowerdate) -and ($now -lt $upperdate)) {
             Write-output "Restarting VM - $($vm.Name)"
